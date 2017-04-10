@@ -194,7 +194,7 @@ class PokerMove(Move):
 		])
 
 	def is_straight(self):
-		rank_frequency = Counter([c.rank for c in self.cards])
+		pass
 
 
 	def is_flush(self):
@@ -212,13 +212,13 @@ class PokerMove(Move):
 class KindMoves(Move):
 	def is_valid(self):
 		num_unique_ranks = {c.rank for c in self.cards}
-		return num_unique_ranks == 1
+		return len(num_unique_ranks) == 1
 
-dd = Deck.DefaultDeck()
-print(dd)
-dd.shuffle()
-print(dd.get_hands(4))
-print dd
-pm = PokerMove(dd.cards[:5])
+# dd = Deck.DefaultDeck()
+# print(dd)
+# dd.shuffle()
+# print(dd.get_hands(4))
+# print dd
+# pm = PokerMove(dd.cards[:5])
 
-print pm
+# print pm
