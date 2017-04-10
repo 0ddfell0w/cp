@@ -209,6 +209,7 @@ class PokerMove(Move):
 		pass
 
 
+# TODO(Zack): Wiki says that Kind moves can't be 4 cards, 4 of a kinds must include a 5th card
 class KindMoves(Move):
 	def is_valid(self):
 		num_unique_ranks = {c.rank for c in self.cards}
