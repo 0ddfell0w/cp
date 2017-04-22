@@ -1,3 +1,4 @@
+# coding: utf-8
 '''
 Dump of relevant classes for representing card collections (e.g. moves, hands, decks).
 '''
@@ -5,29 +6,30 @@ import random
 import bisect
 from collections import Counter
 
-class Suit(object):
-	DIAMONDS = 1
-	HEARTS = 2
-	CLUBS = 3
-	SPADES = 4
 
-	VALID_SUITS = (DIAMONDS, HEARTS, CLUBS, SPADES)
+class Suit(object):
+	D = DIAMONDS = 1
+	C = CLUBS = 2
+	H = HEARTS = 3
+	S = SPADES = 4
+
+	VALID_SUITS = (DIAMONDS, CLUBS, HEARTS, SPADES)
 
 
 class Rank(object):
-	THREE = 3
-	FOUR = 4
-	FIVE = 5
-	SIX = 6
-	SEVEN = 7
-	EIGHT = 8
-	NINE = 9
-	TEN = 10
-	JACK = 11
-	QUEEN = 12
-	KING = 13
-	ACE = 14
-	TWO = 15
+	_3 = THREE = 3
+	_4 = FOUR = 4
+	_5 = FIVE = 5
+	_6 = SIX = 6
+	_7 = SEVEN = 7
+	_8 = EIGHT = 8
+	_9 = NINE = 9
+	_10 = TEN = 10
+	_J = JACK = 11
+	_Q = QUEEN = 12
+	_K = KING = 13
+	_A = ACE = 14
+	_2 = TWO = 15
 
 	VALID_RANKS = (
 		THREE,
@@ -48,9 +50,12 @@ class Rank(object):
 
 class Card(object):
 
-	def __init__(self, suit, rank):
-		self.suit = suit
+	def __init__(self, rank, suit):
 		self.rank = rank
+		self.suit = suit
+
+	def __repr__(self):
+		return "{}{}".format(self.rankString(), self.suitString())
 
 	def rankString(self):
 		if self.rank > 10:
@@ -60,18 +65,19 @@ class Card(object):
 		return rankString
 
 	def suitString(self):
+		# TODO(Zack): Replace with unicode characters
 		if self.suit == Suit.DIAMONDS:
-			return "D"
-		elif self.suit == Suit.HEARTS:
-			return "H"
+			return "♦"
 		elif self.suit == Suit.CLUBS:
-			return "C"
+			return "♣"
+		elif self.suit == Suit.HEARTS:
+			return "♥"
 		elif self.suit == Suit.SPADES:
-			return "S"
+			return "♠"
 
 	def __cmp__(self, other):
 		if not isinstance(other, Card):
-			raise TypeError("Cannot compare Move with {}".format(type(other)))
+			raise TypeError("Cannot compare Card with {}".format(type(other)))
 		if self.rank > other.rank:
 			ret = 1
 		elif self.rank < other.rank:
@@ -84,11 +90,6 @@ class Card(object):
 			else:
 				ret = 0
 		return ret
-
-
-	def __repr__(self):
-		return "{}{}".format(self.rankString(), self.suitString())
-
 
 class CardCollection(object):
 	def __init__(self, cards):
@@ -117,7 +118,8 @@ class CardCollection(object):
 	def remove_lowest_cards(self, n):
 		if not n:
 			return
-		card_to_score = {card: idx for idx, card in enumerate(sorted(cards))}
+		card_to_score = {card: idx
+			for idx, card in enumerate(sorted(self.cards))}
 		self.cards = [card for card in self.cards if card_to_score[card] >= n]
 
 
@@ -125,12 +127,14 @@ class Deck(CardCollection):
 
 	@staticmethod
 	def DefaultDeck():
-		return Deck([Card(suit, rank)
+		'''Get a 52 card deck in sorted order'''
+		return Deck([Card(rank, suit)
 		for rank in Rank.VALID_RANKS
 		for suit in Suit.VALID_SUITS])
 
 
 	def get_hands(self, num_hands, remove_cards=True):
+		'''get num_hands-many hands from the deck'''
 		if remove_cards:
 			self.remove_lowest_cards(len(self.cards) % num_hands)
 		hands = [Hand([]) for _ in range(num_hands)]
@@ -155,26 +159,8 @@ class Move(CardCollection):
 	def __cmp__(self, other):
 		if len(self.cards) != len(other.cards):
 			return -1
-		# TODO(Zack): message
+		# TODO(Danna): finish this
 
-
-
-class PlayerMove(object):
-	def __init__(self, player, move):
-		self.player = player
-		self.move = move
-
-	def __cmp__(self, other):
-		# everyone passed, it's this player's turn again
-		if self.player == other.player:
-			return 1
-		# otherwise rely on the strength of the move
-		elif self.move > other.move:
-			return 1
-		elif self.move < other.move:
-			return -1
-		else:
-			return 0
 
 class PokerMove(Move):
 
@@ -194,7 +180,8 @@ class PokerMove(Move):
 		])
 
 	def is_straight(self):
-		pass
+		ranks = sorted([card.rank for card in self.cards])
+		return all(x == y for x, y in enumerate(ranks, ranks[0]))
 
 
 	def is_flush(self):
@@ -214,12 +201,3 @@ class KindMoves(Move):
 	def is_valid(self):
 		num_unique_ranks = len({c.rank for c in self.cards})
 		return num_unique_ranks == 1
-
-# dd = Deck.DefaultDeck()
-# print(dd)
-# dd.shuffle()
-# print(dd.get_hands(4))
-# print dd
-# pm = PokerMove(dd.cards[:5])
-
-# print pm
