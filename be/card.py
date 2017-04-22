@@ -8,10 +8,11 @@ from collections import Counter
 
 
 class Suit(object):
-	D = DIAMONDS = 1
-	C = CLUBS = 2
-	H = HEARTS = 3
-	S = SPADES = 4
+
+	_D = DIAMONDS = 1
+	_C = CLUBS = 2
+	_H = HEARTS = 3
+	_S = SPADES = 4
 
 	VALID_SUITS = (DIAMONDS, CLUBS, HEARTS, SPADES)
 
@@ -53,6 +54,9 @@ class Card(object):
 	def __init__(self, rank, suit):
 		self.rank = rank
 		self.suit = suit
+
+	def __repr__(self):
+		return "{}{}".format(self.rankString(), self.suitString())
 
 	def __repr__(self):
 		return "{}{}".format(self.rankString(), self.suitString())
