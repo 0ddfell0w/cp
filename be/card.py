@@ -6,17 +6,35 @@ import random
 import bisect
 from collections import Counter
 
-
 class Suit(object):
-	D = DIAMONDS = 1
-	C = CLUBS = 2
-	H = HEARTS = 3
-	S = SPADES = 4
+
+	_D = DIAMONDS = 1
+	_C = CLUBS = 2
+	_H = HEARTS = 3
+	_S = SPADES = 4
 
 	VALID_SUITS = (DIAMONDS, CLUBS, HEARTS, SPADES)
 
+	@staticmethod
+	def from_string(string):
+		return {
+			"♦": Suit.DIAMONDS,
+			"♣": Suit.CLUBS,
+			"♥": Suit.HEARTS,
+			"♠": Suit.SPADES,
+			"D": Suit.DIAMONDS,
+			"C": Suit.CLUBS,
+			"H": Suit.HEARTS,
+			"S": Suit.SPADES,
+			"DIAMONDS": Suit.DIAMONDS,
+			"CLUBS": Suit.CLUBS,
+			"HEARTS": Suit.HEARTS,
+			"SPADES": Suit.SPADES,
+		}.get(string.upper())
+
 
 class Rank(object):
+
 	_3 = THREE = 3
 	_4 = FOUR = 4
 	_5 = FIVE = 5
@@ -31,21 +49,53 @@ class Rank(object):
 	_A = ACE = 14
 	_2 = TWO = 15
 
-	VALID_RANKS = (
-		THREE,
-		FOUR,
-		FIVE,
-		SIX,
-		SEVEN,
-		EIGHT,
-		NINE,
-		TEN,
-		JACK,
-		QUEEN,
-		KING,
-		ACE,
-		TWO,
-	)
+	VALID_RANKS = (_3, _4, _5, _6, _7, _8, _9, _10, _J, _Q, _K, _A, _2)
+
+	@staticmethod
+	def from_string(string):
+ 		return {
+			"3": Rank.THREE,
+			"4": Rank.FOUR,
+			"5": Rank.FIVE,
+			"6": Rank.SIX,
+			"7": Rank.SEVEN,
+			"8": Rank.EIGHT,
+			"9": Rank.NINE,
+			"10": Rank.TEN,
+			"J": Rank.JACK,
+			"Q": Rank.QUEEN,
+			"K": Rank.KING,
+			"A": Rank.ACE,
+			"2": Rank.TWO,
+			"THREE": Rank.THREE,
+			"FOUR": Rank.FOUR,
+			"FIVE": Rank.FIVE,
+			"SIX": Rank.SIX,
+			"SEVEN": Rank.SEVEN,
+			"EIGHT": Rank.EIGHT,
+			"NINE": Rank.NINE,
+			"TEN": Rank.TEN,
+			"JACK": Rank.JACK,
+			"QUEEN": Rank.QUEEN,
+			"KING": Rank.KING,
+			"ACE": Rank.ACE,
+			"TWO": Rank.TWO,
+		}.get(string.upper())
+
+	@staticmethod
+	def from_string(string):
+		# TODO(Zack): how do I properly organize this
+		# to not create this dict every time
+		return {
+			"3": Suit._D,
+			"4": Suit._C,
+			"H": Suit._H,
+			"S": Suit._S,
+			"DIAMONDS": Suit._DIAMONDS,
+			"CLUBS": Suit._CLUBS,
+			"HEARTS": Suit._HEARTS,
+			"SPADES": Suit._SPADES,
+		}.get(string.upper())
 
 
 class Card(object):
@@ -56,6 +106,14 @@ class Card(object):
 
 	def __repr__(self):
 		return "{}{}".format(self.rankString(), self.suitString())
+
+	def __repr__(self):
+		return "{}{}".format(self.rankString(), self.suitString())
+
+	@staticmethod
+	def from_string(string):
+		rankString, suitString = string[:-1], string[-1:]
+		return Card(Rank.from_string(rankString), Suit.from_string(suitString))
 
 	def rankString(self):
 		if self.rank > 10:
@@ -74,6 +132,7 @@ class Card(object):
 			return "♥"
 		elif self.suit == Suit.SPADES:
 			return "♠"
+
 
 	def __cmp__(self, other):
 		if not isinstance(other, Card):

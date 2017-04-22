@@ -2,6 +2,8 @@ import unittest
 
 from card import Card, Deck, Rank, Suit
 
+C = Card.from_string
+
 class DeckTest(unittest.TestCase):
 
 	def test_self_equality(self):
@@ -11,9 +13,9 @@ class DeckTest(unittest.TestCase):
 
 	def test_order_suits(self):
 		for r in Rank.VALID_RANKS:
-			self.assertLess(Card(r, Suit.DIAMONDS), Card(r, Suit.CLUBS))
-			self.assertLess(Card(r, Suit.CLUBS), Card(r, Suit.HEARTS))
-			self.assertLess(Card(r, Suit.HEARTS), Card(r, Suit.SPADES))
+			self.assertLess(Card(r, Suit._D), Card(r, Suit._C))
+			self.assertLess(Card(r, Suit._C), Card(r, Suit._H))
+			self.assertLess(Card(r, Suit._H), Card(r, Suit._S))
 
 	def test_order_ranks(self):
 		for s in Suit.VALID_SUITS:
@@ -37,16 +39,16 @@ class HandTest(unittest.TestCase):
 	def testSorting(self):
 		self.assertEquals(
 			[
-				Card(Rank._5, Suit.C),
-				Card(Rank._9, Suit.S),
-				Card(Rank._2, Suit.D),
-				Card(Rank._2, Suit.H),
+				Card(Rank._5, Suit._C),
+				Card(Rank._9, Suit._S),
+				Card(Rank._2, Suit._D),
+				Card(Rank._2, Suit._H),
 			],
 			sorted([
-				Card(Rank._2, Suit.H),
-				Card(Rank._9, Suit.S),
-				Card(Rank._5, Suit.C),
-				Card(Rank._2, Suit.D),
+				Card(Rank._2, Suit._H),
+				Card(Rank._9, Suit._S),
+				Card(Rank._5, Suit._C),
+				Card(Rank._2, Suit._D),
 			]))
 
 if __name__ == '__main__':
