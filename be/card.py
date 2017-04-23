@@ -134,6 +134,10 @@ class CardCollection(object):
 	def __contains__(self, x):
 		return x in self.cards
 
+	@classmethod
+	def from_string(cls, string, delimiter=None):
+		return cls([Card.from_string(sub) for sub in string.split(delimiter)])
+
 	def shuffle(self):
 		'''Shuffle cards in place'''
 		self.cards = random.sample(self.cards, len(self.cards))
@@ -233,9 +237,10 @@ class PokerMove(Move):
 		return lens == [2, 3]
 
 
-# TODO(Zack): Wiki says that Kind moves can't be 4 cards, 4 of a kinds must include a 5th card
-class KindMoves(Move):
+class KindMove(Move):
 
 	def is_valid(self):
+		if len(self.cards) not in [1, 2, 3]:
+			return False
 		num_unique_ranks = len({c.rank for c in self.cards})
 		return num_unique_ranks == 1
