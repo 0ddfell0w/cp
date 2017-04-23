@@ -1,15 +1,16 @@
 import unittest
 from collections import defaultdict
 
-from card import Card, Deck, KindMove, PokerMove, Rank, Suit
+from card import (Card, CardCollection, Deck, Hand, KindMove, PokerMove, Rank,
+                  Suit, Move)
+
 
 
 class CardTest(unittest.TestCase):
 	def test_self_equality(self):
 		for card in Deck.DefaultDeck():
-			self.assertEquals(card, card,
+			self.assertEquals(card, Card(card.rank, card.suit),
 				"{} != {} should be equal".format(card, card))
-
 
 class DefaultDeckTest(unittest.TestCase):
 
@@ -41,19 +42,8 @@ class DefaultDeckTest(unittest.TestCase):
 				Card(Rank._2, s))
 
 	def test_sorting(self):
-		self.assertEquals(
-			[
-				Card(Rank._5, Suit._C),
-				Card(Rank._9, Suit._S),
-				Card(Rank._2, Suit._D),
-				Card(Rank._2, Suit._H),
-			],
-			sorted([
-				Card(Rank._2, Suit._H),
-				Card(Rank._9, Suit._S),
-				Card(Rank._5, Suit._C),
-				Card(Rank._2, Suit._D),
-			]))
+		self.assertEquals(Hand.from_string("5C 9S 2D 2H").cards,
+			Hand.from_string("2H 9S 5C 2D").sorted().cards)
 
 
 class PokerMoveTest(unittest.TestCase):
@@ -80,28 +70,38 @@ class PokerMoveTest(unittest.TestCase):
 
 
 class KindMoveTest(unittest.TestCase):
+	def assertInOrder(self, string_hands):
+		for x, y in zip(string_hands, string_hands[1:]):
+			self.assertTrue(KindMove.from_string(x) < KindMove.from_string(y))
+	def test(self):
+		self.assertTrue(Card(Rank._2, Suit.SPADES) > Card(Rank._2, Suit.HEARTS))
+		# self.assertInOrder(["2H", "2S" ])
 
-	def test_kind_moves(self):
-		for card in Deck.DefaultDeck():
-			self.assertTrue(KindMove([card]).is_valid())
 
-	def test_2_of_kind(self):
-		for rank in Rank.VALID_RANKS:
-			self.assertTrue(all((
-				KindMove([Card(rank, Suit._D), Card(rank, Suit._H)]).is_valid(),
-				KindMove([Card(rank, Suit._H), Card(rank, Suit._C)]).is_valid(),
-				KindMove([Card(rank, Suit._C), Card(rank, Suit._S)]).is_valid(),
-				KindMove([Card(rank, Suit._S), Card(rank, Suit._H)]).is_valid(),
-			)))
+# "2c 2h 2s",
+# "3c 3h 3s",
+# "7h 7s 7c",
 
-	def test_2_of_kind(self):
-		for rank in Rank.VALID_RANKS:
-			self.assertTrue(all((
-				KindMove([Card(rank, Suit._D), Card(rank, Suit._H)]).is_valid(),
-				KindMove([Card(rank, Suit._H), Card(rank, Suit._C)]).is_valid(),
-				KindMove([Card(rank, Suit._C), Card(rank, Suit._S)]).is_valid(),
-				KindMove([Card(rank, Suit._S), Card(rank, Suit._H)]).is_valid(),
-			)))
+
+
+
+
+
+	pass
+	# def test_kind_moves(self):
+	# 	for card in Deck.DefaultDeck():
+	# 		self.assertTrue(KindMove([card]).is_valid())
+
+	# # def test_2_of_kind(self):
+
+	# def test_3_of_kind(self):
+	# 	for rank in Rank.VALID_RANKS:
+	# 		self.assertTrue(all((
+	# 			KindMove([Card(rank, Suit._D), Card(rank, Suit._H)]).is_valid(),
+	# 			KindMove([Card(rank, Suit._H), Card(rank, Suit._C)]).is_valid(),
+	# 			KindMove([Card(rank, Suit._C), Card(rank, Suit._S)]).is_valid(),
+	# 			KindMove([Card(rank, Suit._S), Card(rank, Suit._H)]).is_valid(),
+	# 		)))
 
 
 if __name__ == '__main__':

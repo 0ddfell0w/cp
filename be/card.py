@@ -5,6 +5,7 @@ Dump of relevant classes for representing card collections (e.g. moves, hands, d
 import bisect
 import random
 from collections import Counter, defaultdict
+from functools import total_ordering
 
 class Suit(object):
 
@@ -53,7 +54,7 @@ class Rank(object):
 
 	@staticmethod
 	def from_string(string):
- 		return {
+		return {
 			"3": Rank.THREE,
 			"4": Rank.FOUR,
 			"5": Rank.FIVE,
@@ -69,19 +70,35 @@ class Rank(object):
 			"2": Rank.TWO,
 		}.get(str(string).upper())
 
+@total_ordering
 class Card(object):
 
 	def __init__(self, rank, suit):
 		self.rank = rank
 		self.suit = suit
 
-	def __repr__(self):
-		return "{}{}".format(self.rankString(), self.suitString())
-
 	@staticmethod
 	def from_string(string):
 		rankString, suitString = string[:-1], string[-1:]
 		return Card(Rank.from_string(rankString), Suit.from_string(suitString))
+
+	def _is_valid_operand(self, other):
+			return (hasattr(other, "suit") and
+							hasattr(other, "rank"))
+
+	def __eq__(self, other):
+			if not self._is_valid_operand(other):
+					return NotImplemented
+			return ((self.rank, self.suit) == (other.rank, other.suit))
+
+	def __lt__(self, other):
+			if not self._is_valid_operand(other):
+					return NotImplemented
+			return ((self.rank, self.suit) <
+							(other.rank, other.suit))
+
+	def __repr__(self):
+		return "{}{}".format(self.rankString(), self.suitString())
 
 	def rankString(self):
 		if self.rank > 10:
@@ -101,21 +118,6 @@ class Card(object):
 		elif self.suit == Suit.SPADES:
 			return "♠"
 
-	def __cmp__(self, other):
-		if not isinstance(other, Card):
-			raise TypeError("Cannot compare Card with {}".format(type(other)))
-		if self.rank > other.rank:
-			ret = 1
-		elif self.rank < other.rank:
-			ret = -1
-		else:
-			if self.suit > other.suit:
-				ret = 1
-			elif self.suit < other.suit:
-				ret = -1
-			else:
-				ret = 0
-		return ret
 
 class CardCollection(object):
 	def __init__(self, cards):
@@ -144,6 +146,14 @@ class CardCollection(object):
 
 	def shuffled(self):
 		self.shuffle()
+		return self
+
+	def sort(self):
+		'''Sort cards in place'''
+		self.cards.sort()
+
+	def sorted(self):
+		self.sort()
 		return self
 
 	def by_rank(self):
@@ -226,21 +236,56 @@ class PokerMove(Move):
 		rankToSuits = defaultdict(set)
 		for card in self.cards:
 			rankToSuits[card.rank].add(card.suit)
-		lens = sorted(len(unique) for unique in rankToSuits.values())
+		lens = sorted(len(unique_suits) for unique_suits in rankToSuits.values())
 		return lens == [1, 4]
 
 	def is_full_house(self):
 		rankToSuits = defaultdict(set)
 		for card in self.cards:
 			rankToSuits[card.rank].add(card.suit)
-		lens = sorted(len(unique) for unique in rankToSuits.values())
+		lens = sorted(len(unique_suits) for unique_suits in rankToSuits.values())
 		return lens == [2, 3]
 
 
+@total_ordering
 class KindMove(Move):
 
-	def is_valid(self):
-		if len(self.cards) not in [1, 2, 3]:
-			return False
-		num_unique_ranks = len({c.rank for c in self.cards})
-		return num_unique_ranks == 1
+	def __init__(self, cards):
+		if len(cards) not in [1, 2, 3]:
+			raise ValueError("KindMoves must consist of 1, 2 or 3 cards.")
+		num_unique_ranks = len({c.rank for c in cards})
+		if num_unique_ranks != 1:
+			raise ValueError("KindMoves must have one unique rank.")
+		return super(KindMove, self).__init__(cards)
+
+	def __le__(self, other):
+		return (len(self.cards) == len(other.cards) and
+			max(other.cards) >= max(self.cards))
+
+	def __ge__(self, other):
+		return (len(self.cards) == len(other.cards) and
+			max(other.cards) <= max(self.cards))
+
+	def __gt__(self, other):
+		return (len(self.cards) == len(other.cards) and
+			max(other.cards) < max(self.cards))
+
+	def __lt__(self, other):
+		return (len(self.cards) == len(other.cards) and
+			max(other.cards) > max(self.cards))
+
+	def __eq__(self, other):
+		if len(self.cards) != len(other.cards):
+			raise ValueError("Cannot compare different length KindMoves")
+		return max(other.cards) == max(self.cards)
+
+kms = sorted(map(KindMove.from_string,
+				[
+				"2c 2h 2s",
+				"3c 3h 3s",
+				"7h 7s 7c",
+				]))
+
+print kms
+# print km.is_valid()
+# print kms
