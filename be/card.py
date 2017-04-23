@@ -2,9 +2,9 @@
 '''
 Dump of relevant classes for representing card collections (e.g. moves, hands, decks).
 '''
-import random
 import bisect
-from collections import Counter
+import random
+from collections import Counter, defaultdict
 
 class Suit(object):
 
@@ -30,7 +30,7 @@ class Suit(object):
 			"CLUBS": Suit.CLUBS,
 			"HEARTS": Suit.HEARTS,
 			"SPADES": Suit.SPADES,
-		}.get(string.upper())
+		}.get(str(string).upper())
 
 
 class Rank(object):
@@ -67,45 +67,13 @@ class Rank(object):
 			"K": Rank.KING,
 			"A": Rank.ACE,
 			"2": Rank.TWO,
-			"THREE": Rank.THREE,
-			"FOUR": Rank.FOUR,
-			"FIVE": Rank.FIVE,
-			"SIX": Rank.SIX,
-			"SEVEN": Rank.SEVEN,
-			"EIGHT": Rank.EIGHT,
-			"NINE": Rank.NINE,
-			"TEN": Rank.TEN,
-			"JACK": Rank.JACK,
-			"QUEEN": Rank.QUEEN,
-			"KING": Rank.KING,
-			"ACE": Rank.ACE,
-			"TWO": Rank.TWO,
-		}.get(string.upper())
-
-	@staticmethod
-	def from_string(string):
-		# TODO(Zack): how do I properly organize this
-		# to not create this dict every time
-		return {
-			"3": Suit._D,
-			"4": Suit._C,
-			"H": Suit._H,
-			"S": Suit._S,
-			"DIAMONDS": Suit._DIAMONDS,
-			"CLUBS": Suit._CLUBS,
-			"HEARTS": Suit._HEARTS,
-			"SPADES": Suit._SPADES,
-		}.get(string.upper())
-
+		}.get(str(string).upper())
 
 class Card(object):
 
 	def __init__(self, rank, suit):
 		self.rank = rank
 		self.suit = suit
-
-	def __repr__(self):
-		return "{}{}".format(self.rankString(), self.suitString())
 
 	def __repr__(self):
 		return "{}{}".format(self.rankString(), self.suitString())
@@ -132,7 +100,6 @@ class Card(object):
 			return "♥"
 		elif self.suit == Suit.SPADES:
 			return "♠"
-
 
 	def __cmp__(self, other):
 		if not isinstance(other, Card):
@@ -171,6 +138,10 @@ class CardCollection(object):
 		'''Shuffle cards in place'''
 		self.cards = random.sample(self.cards, len(self.cards))
 
+	def shuffled(self):
+		self.shuffle()
+		return self
+
 	def by_rank(self):
 		return sorted(self.cards)
 
@@ -191,7 +162,6 @@ class Deck(CardCollection):
 		for rank in Rank.VALID_RANKS
 		for suit in Suit.VALID_SUITS])
 
-
 	def get_hands(self, num_hands, remove_cards=True):
 		'''get num_hands-many hands from the deck'''
 		if remove_cards:
@@ -204,8 +174,8 @@ class Deck(CardCollection):
 
 
 class Hand(CardCollection):
-	pass
-
+	def get_moves_of_len(length):
+		pass
 
 class Move(CardCollection):
 	def __init__(self, cards):
@@ -213,7 +183,6 @@ class Move(CardCollection):
 			raise ValueError(
 				"Moves must have between 0 and 5 cards, inclusive")
 		super(Move, self).__init__(cards)
-
 
 	def __cmp__(self, other):
 		if len(self.cards) != len(other.cards):
@@ -234,7 +203,7 @@ class PokerMove(Move):
 		return any(check() for check in [
 			self.is_straight,
 			self.is_flush,
-			self.is_four_of_kind,
+			self.is_four_of_a_kind,
 			self.is_full_house,
 		])
 
@@ -242,21 +211,31 @@ class PokerMove(Move):
 		ranks = sorted([card.rank for card in self.cards])
 		return all(x == y for x, y in enumerate(ranks, ranks[0]))
 
-
 	def is_flush(self):
-		pass
+		suits = {card.suit for card in self.cards}
+		return len(suits) == 1
 
+	def is_straight_flush(self):
+		return self.is_straight() and self.is_flush()
 
-	def is_four_of_kind(self):
-		pass
-
+	def is_four_of_a_kind(self):
+		rankToSuits = defaultdict(set)
+		for card in self.cards:
+			rankToSuits[card.rank].add(card.suit)
+		lens = sorted(len(unique) for unique in rankToSuits.values())
+		return lens == [1, 4]
 
 	def is_full_house(self):
-		pass
+		rankToSuits = defaultdict(set)
+		for card in self.cards:
+			rankToSuits[card.rank].add(card.suit)
+		lens = sorted(len(unique) for unique in rankToSuits.values())
+		return lens == [2, 3]
 
 
 # TODO(Zack): Wiki says that Kind moves can't be 4 cards, 4 of a kinds must include a 5th card
 class KindMoves(Move):
+
 	def is_valid(self):
 		num_unique_ranks = len({c.rank for c in self.cards})
 		return num_unique_ranks == 1
