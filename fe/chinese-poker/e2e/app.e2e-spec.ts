@@ -4,11 +4,11 @@ describe('chinese-poker App', function() {
   let page: ChinesePokerPage;
 
   beforeEach(() => {
-    page = new ChinesePokerPage();
+  page = new ChinesePokerPage();
   });
 
   it('should display message saying app works', () => {
-    page.navigateTo();
-    expect(page.getParagraphText()).toEqual('app works!');
+  page.navigateTo();
+  expect(page.getParagraphText()).toEqual('app works!');
   });
 });

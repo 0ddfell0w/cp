@@ -8,13 +8,13 @@ import { CardComponent } from './card/card.component';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    CardComponent,
+  AppComponent,
+  CardComponent,
   ],
   imports: [
-    BrowserModule,
-    FormsModule,
-    HttpModule
+  BrowserModule,
+  FormsModule,
+  HttpModule
   ],
   providers: [],
   bootstrap: [AppComponent]
