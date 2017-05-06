@@ -279,10 +279,3 @@ class KindMove(Move):
     if len(self.cards) != len(other.cards):
       raise ValueError("Cannot compare different length KindMoves")
     return max(other.cards) == max(self.cards)
-
-kms = sorted(map(KindMove.from_string,
-        [
-        "2c 2h 2s",
-        "3c 3h 3s",
-        "7h 7s 7c",
-        ]))
