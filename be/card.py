@@ -191,6 +191,7 @@ class Hand(CardCollection):
 	def get_moves_of_len(length):
 		pass
 
+
 class Move(CardCollection):
 	def __init__(self, cards):
 		if not (0 <= len(cards) <= 5):
