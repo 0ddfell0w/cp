@@ -285,7 +285,3 @@ kms = sorted(map(KindMove.from_string,
 				"3c 3h 3s",
 				"7h 7s 7c",
 				]))
-
-print kms
-# print km.is_valid()
-# print kms

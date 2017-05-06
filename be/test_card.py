@@ -49,33 +49,45 @@ class DefaultDeckTest(unittest.TestCase):
 class PokerMoveTest(unittest.TestCase):
 
 	def test_is_straight(self):
-				straight = PokerMove.from_string("3S 4S 5S 6S 7S")
-				self.assertTrue(straight.is_straight())
+		straight = PokerMove.from_string("3S 4S 5S 6S 7S")
+		self.assertTrue(straight.is_straight())
 
 	def test_is_flush(self):
-				flush = PokerMove.from_string("3S JS QS KS 7S")
-				self.assertTrue(flush.is_flush())
+		flush = PokerMove.from_string("3S JS QS KS 7S")
+		self.assertTrue(flush.is_flush())
 
 	def test_is_straight_flush(self):
-				straight_flush = PokerMove.from_string("3S 4S 5S 6S 7S")
-				self.assertTrue(straight_flush.is_straight_flush())
+		straight_flush = PokerMove.from_string("3S 4S 5S 6S 7S")
+		self.assertTrue(straight_flush.is_straight_flush())
 
 	def test_is_four_of_a_kind(self):
-				four_of_a_kind = PokerMove.from_string("3S 3H 3C 3D 7S")
-				self.assertTrue(four_of_a_kind.is_four_of_a_kind())
+		four_of_a_kind = PokerMove.from_string("3S 3H 3C 3D 7S")
+		self.assertTrue(four_of_a_kind.is_four_of_a_kind())
 
 	def test_is_full_house(self):
-				full_house = PokerMove.from_string("3s 3h 3c 7d 7c")
-				self.assertTrue(full_house.is_full_house())
+		full_house = PokerMove.from_string("3s 3h 3c 7d 7c")
+		self.assertTrue(full_house.is_full_house())
 
 
 class KindMoveTest(unittest.TestCase):
 	def assertInOrder(self, string_hands):
 		for x, y in zip(string_hands, string_hands[1:]):
 			self.assertTrue(KindMove.from_string(x) < KindMove.from_string(y))
-	def test(self):
-		self.assertTrue(Card(Rank._2, Suit.SPADES) > Card(Rank._2, Suit.HEARTS))
-		# self.assertInOrder(["2H", "2S" ])
+
+	def testOneOfAKind(self):
+		self.assertInOrder(["3C 3H 3S", "2C 2H 2S"])
+
+	def testTwoOfAKind(self):
+		self.assertInOrder(["3C 3H 3S", "2C 2H 2S"])
+
+	def testThreeOfAKind(self):
+		self.assertInOrder(["3C 3H 3S", "2C 2H 2S"])
+
+	def testFourOfAKind_Invalid(self):
+		self.assertInOrder(["3C 3H 3S", "2C 2H 2S"])
+
+	def testFourOfAKind_Valid(self):
+		self.assertInOrder(["3C 3H 3S", "2C 2H 2S"])
 
 
 # "2c 2h 2s",
