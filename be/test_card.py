@@ -4,13 +4,12 @@ from collections import defaultdict
 from card import (Card, CardCollection, Deck, Hand, KindMove, PokerMove, Rank,
                   Suit, Move)
 
-
-
 class CardTest(unittest.TestCase):
 	def test_self_equality(self):
 		for card in Deck.DefaultDeck():
 			self.assertEquals(card, Card(card.rank, card.suit),
 				"{} != {} should be equal".format(card, card))
+
 
 class DefaultDeckTest(unittest.TestCase):
 
@@ -75,45 +74,21 @@ class KindMoveTest(unittest.TestCase):
 			self.assertTrue(KindMove.from_string(x) < KindMove.from_string(y))
 
 	def testOneOfAKind(self):
-		self.assertInOrder(["3C 3H 3S", "2C 2H 2S"])
+		self.assertInOrder(["3C", "4C"])
 
 	def testTwoOfAKind(self):
-		self.assertInOrder(["3C 3H 3S", "2C 2H 2S"])
+		self.assertInOrder(["3C 3H", "4C 4H"])
 
 	def testThreeOfAKind(self):
-		self.assertInOrder(["3C 3H 3S", "2C 2H 2S"])
+		self.assertInOrder(["3C 3H 3S", "4C 4H 4S"])
 
-	def testFourOfAKind_Invalid(self):
-		self.assertInOrder(["3C 3H 3S", "2C 2H 2S"])
+	def testFourOfAKind_invalid(self):
+		with self.assertRaises(ValueError):
+			self.assertInOrder(["3D 3C 3H 3S", "4D 4C 4H 4S"])
 
-	def testFourOfAKind_Valid(self):
-		self.assertInOrder(["3C 3H 3S", "2C 2H 2S"])
-
-
-# "2c 2h 2s",
-# "3c 3h 3s",
-# "7h 7s 7c",
-
-
-
-
-
-
-	pass
-	# def test_kind_moves(self):
-	# 	for card in Deck.DefaultDeck():
-	# 		self.assertTrue(KindMove([card]).is_valid())
-
-	# # def test_2_of_kind(self):
-
-	# def test_3_of_kind(self):
-	# 	for rank in Rank.VALID_RANKS:
-	# 		self.assertTrue(all((
-	# 			KindMove([Card(rank, Suit._D), Card(rank, Suit._H)]).is_valid(),
-	# 			KindMove([Card(rank, Suit._H), Card(rank, Suit._C)]).is_valid(),
-	# 			KindMove([Card(rank, Suit._C), Card(rank, Suit._S)]).is_valid(),
-	# 			KindMove([Card(rank, Suit._S), Card(rank, Suit._H)]).is_valid(),
-	# 		)))
+	def testFourOfAKind_validPokerMoveInvalidKindMove(self):
+		with self.assertRaises(ValueError):
+			self.assertInOrder(["3D 3C 3H 3S 5C", "4D 4C 4H 4S 5D"])
 
 
 if __name__ == '__main__':
