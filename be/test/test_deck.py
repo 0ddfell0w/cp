@@ -1,8 +1,11 @@
-from __future__ import absolute_import
-from __future__ import unicode_literals
+from __future__ import absolute_import, unicode_literals
 
-from card import Card, Deck, Hand, Suit, Rank
 import unittest
+
+from card import Card, Rank, Suit
+from deck import Deck
+from hand import Hand
+
 
 class DeckTest(unittest.TestCase):
 

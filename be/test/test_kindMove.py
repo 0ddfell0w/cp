@@ -1,6 +1,6 @@
 import unittest
 
-from card import KindMove
+from kind_move import KindMove
 from test.utils import CardCollectionUtils as cc_utils
 
 

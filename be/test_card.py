@@ -2,8 +2,8 @@ import unittest
 from collections import defaultdict
 from functools import total_ordering
 
-from card import (Card, CardCollection, Deck, Hand, KindMove, Move, PokerMove,
-                  Rank, Suit)
+from card import Card
+from deck import Deck
 from test.utils import CardCollectionUtils
 
 
