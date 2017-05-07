@@ -2,10 +2,13 @@
 '''
 Dump of relevant classes for representing card collections (e.g. moves, hands, decks).
 '''
+from __future__ import absolute_import, unicode_literals
+
 import bisect
 import random
 from collections import Counter, defaultdict
 from functools import total_ordering
+
 
 class Suit(object):
 
@@ -19,10 +22,6 @@ class Suit(object):
   @staticmethod
   def from_string(string):
     return {
-      "♦": Suit.DIAMONDS,
-      "♣": Suit.CLUBS,
-      "♥": Suit.HEARTS,
-      "♠": Suit.SPADES,
       "D": Suit.DIAMONDS,
       "C": Suit.CLUBS,
       "H": Suit.HEARTS,
@@ -110,13 +109,13 @@ class Card(object):
   def suitString(self):
     # TODO(Zack): Replace with unicode characters
     if self.suit == Suit.DIAMONDS:
-      return "♦"
+      return "D"
     elif self.suit == Suit.CLUBS:
-      return "♣"
+      return "C"
     elif self.suit == Suit.HEARTS:
-      return "♥"
+      return "H"
     elif self.suit == Suit.SPADES:
-      return "♠"
+      return "S"
 
 
 class CardCollection(object):
@@ -125,6 +124,17 @@ class CardCollection(object):
 
   def __len__(self):
     return len(self.cards)
+
+  def __ne__(self, other):
+    if not isinstance(other, CardCollection):
+      raise NotImplemented()  # TODO(Zack): helpful message? type error?
+    return len(self) != len(other) or sorted(self.cards) != sorted(other.cards)
+
+  def __eq__(self, other):
+    if not isinstance(other, CardCollection):
+      raise NotImplemented()  # TODO(Zack): helpful message? type error?
+    return (len(self) == len(other) and
+      sorted(self.cards) == sorted(other.cards))
 
   def __repr__(self):
     return "<{} ({}) {}>".format(
