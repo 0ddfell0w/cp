@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { CardComponent } from './card/card.component';
+import { DeckComponent, DEFAULT_DECK } from './deck/deck.component';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +8,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app works!';
+  title = 'Chinese Poker';
+  cards = DEFAULT_DECK;
 }
