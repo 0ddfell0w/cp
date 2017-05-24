@@ -11,5 +11,5 @@ import { CardCollection } from './card-collection/card-collection';
 })
 export class AppComponent {
   title = 'Chinese Poker';
-  deck : CardCollection = DEFAULT_DECK;
+  deck : DeckComponent = new DeckComponent(DEFAULT_DECK);
 }

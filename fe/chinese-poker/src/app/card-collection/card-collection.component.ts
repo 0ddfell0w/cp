@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, Input } from '@angular/core';
 import { Card } from '../card/card';
+import { CardCollection } from '../card-collection/card-collection';
 
 @Component({
   selector: 'app-card-collection',
@@ -8,8 +9,10 @@ import { Card } from '../card/card';
 })
 export abstract class CardCollectionComponent implements OnInit {
 
-  constructor(protected cards: Array<Card>) {}
+  // @Input protected cards: CardCollection;
 
-  ngOnInit() {
-  }
+  constructor(@Inject('cards') protected cards: CardCollection) {}
+  // constructor(@Inject('cards') protected cards: CardCollection) {}
+
+  ngOnInit() {}
 }

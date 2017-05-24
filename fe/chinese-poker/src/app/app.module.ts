@@ -3,17 +3,16 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
+import { Deck } from './deck/deck';
 import { AppComponent } from './app.component';
 import { CardComponent } from './card/card.component';
 import { DeckComponent } from './deck/deck.component';
-import { CardCollectionComponent } from './card-collection/card-collection.component';
 
 @NgModule({
   declarations: [
   AppComponent,
   CardComponent,
   DeckComponent,
-  CardCollectionComponent,
   ],
   imports: [
   BrowserModule,

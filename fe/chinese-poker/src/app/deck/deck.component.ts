@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Inject } from '@angular/core';
 import { CardCollectionComponent } from '../card-collection/card-collection.component';
 import { CardComponent } from '../card/card.component';
 import { Card } from '../card/card';
@@ -11,8 +11,10 @@ import { Deck } from './deck';
 })
 export class DeckComponent extends CardCollectionComponent implements OnInit {
 
-  constructor(deck: Deck) {
-    super(deck.getCards());
+  @Input protected cards: Deck;
+
+  constructor(@Inject('cards') protected cards: Deck) {
+    super(cards);
   }
 
   ngOnInit() {
