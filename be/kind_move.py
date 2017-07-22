@@ -11,7 +11,7 @@ class KindMove(Move):
     if len(self.cards) not in [1, 2, 3]:
         return False
     num_unique_ranks = len({c.rank for c in self.cards})
-    return num_unique_ranks == 1:
+    return num_unique_ranks == 1
 
   def __le__(self, other):
     return (len(self.cards) == len(other.cards) and
