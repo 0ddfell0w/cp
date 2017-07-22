@@ -5,7 +5,7 @@ from functools import total_ordering
 class KindMove(Move):
 
   def __init__(self, cards):
-    return super(KindMove, self).__init__(self.cards)
+    return super(KindMove, self).__init__(cards)
 
   def is_valid(self):
     if len(self.cards) not in [1, 2, 3]:

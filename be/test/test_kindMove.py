@@ -6,6 +6,9 @@ from test.utils import CardCollectionUtils as cc_utils
 
 class KindMoveTest(unittest.TestCase):
 
+  def assertInvalidKindMove(self, move_string):
+    self.assertFalse(KindMove.from_string(move_string).is_valid())
+
   def testOneOfAKind(self):
     cc_utils.assert_in_order_from_string(KindMove, ["3C", "4C"])
 
@@ -16,14 +19,10 @@ class KindMoveTest(unittest.TestCase):
     cc_utils.assert_in_order_from_string(KindMove, ["3C 3H 3S", "4C 4H 4S"])
 
   def testFourOfAKind_invalid(self):
-    with self.assertRaises(ValueError):
-      cc_utils.assert_in_order_from_string(
-        KindMove, ["3D 3C 3H 3S", "4D 4C 4H 4S"])
+    self.assertInvalidKindMove("4D 4C 4H 4S")
 
   def testFourOfAKind_validPokerMoveInvalidKindMove(self):
-    with self.assertRaises(ValueError):
-      cc_utils.assert_in_order_from_string(
-        KindMove, ["3D 3C 3H 3S 5C", "4D 4C 4H 4S 5D"])
+    self.assertInvalidKindMove("3D 3C 3H 3S 5C")
 
 if __name__ == '__main__':
   unittest.main()
