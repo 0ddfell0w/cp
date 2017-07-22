@@ -1,30 +1,74 @@
 import unittest
 
 from poker_move import PokerMove
+from test.utils import CardCollectionUtils as cc_utils
 
+INVALID = "3S 4S 5S 6S 2H"
+STRAIGHT = "3S 4C 5D 6S 7H"
+FLUSH = "3S JS QS KS 7S"
+FULL_HOUSE = "3S 3H 3C 7D 7C"
+FOUR_OF_A_KIND = "3S 3H 3C 3D 7S"
+STRAIGHT_FLUSH = "7H 6H 5H 4H 3H"
 
 class PokerMoveTest(unittest.TestCase):
 
   def test_is_straight(self):
-    straight = PokerMove.from_string("3S 4S 5S 6S 7S")
-    self.assertTrue(straight.is_straight())
+    self.assertTrue(PokerMove.from_string(STRAIGHT).is_straight())
 
   def test_is_flush(self):
-    flush = PokerMove.from_string("3S JS QS KS 7S")
-    self.assertTrue(flush.is_flush())
+    self.assertTrue(PokerMove.from_string(FLUSH).is_flush())
 
   def test_is_straight_flush(self):
-    straight_flush = PokerMove.from_string("3S 4S 5S 6S 7S")
-    self.assertTrue(straight_flush.is_straight_flush())
+    self.assertTrue(PokerMove.from_string(STRAIGHT_FLUSH).is_straight_flush())
 
   def test_is_four_of_a_kind(self):
-    four_of_a_kind = PokerMove.from_string("3S 3H 3C 3D 7S")
-    self.assertTrue(four_of_a_kind.is_four_of_a_kind())
+    self.assertTrue(PokerMove.from_string(FOUR_OF_A_KIND).is_four_of_a_kind())
 
   def test_is_full_house(self):
-    full_house = PokerMove.from_string("3s 3h 3c 7d 7c")
-    self.assertTrue(full_house.is_full_house())
+    self.assertTrue(PokerMove.from_string(FULL_HOUSE).is_full_house())
+
+###############################################################################
+# Ordering
+
+  def testMoveStrengthOrdering(self):
+    cc_utils.assert_in_order_from_string(PokerMove, [
+      INVALID,
+      STRAIGHT,
+      FLUSH,
+      FULL_HOUSE,
+      FOUR_OF_A_KIND,
+      STRAIGHT_FLUSH,
+    ])
+
+  # Intra-move-strength ordering
+  def test_straight_ordering_highest_card_wins(self):
+    cc_utils.assert_in_order_from_string(PokerMove,
+      ["3S 4C 5D 6S 7H", "3S 4C 5D 6S 7S"])
+
+  def test_straight_ordering_second_highest_card_wins(self):
+    cc_utils.assert_in_order_from_string(PokerMove,
+      ["3S 4C 5D 6C 7H", "3S 4C 5D 6S 7H"])
+
+  def test_straight_ordering_with_two(self):
+    cc_utils.assert_in_order_from_string(PokerMove,
+      ["9S 10D JC QD KS", "10S JC QD KS 2H"])
+
+  def test_straight_ordering_with_two_suit_wins(self):
+    cc_utils.assert_in_order_from_string(PokerMove,
+      ["10S JC QD KS 2D", "10S JC QD KS 2H"])
+#   def test_flush_ordering(self):
+#     self.assertTrue(PokerMove.from_string(FLUSH).is_flush())
+
+#   def test_straight_flush_ordering(self):
+#     self.assertTrue(PokerMove.from_string(STRAIGHT_FLUSH).is_straight_flush())
+
+#   def test_four_of_a_kind_ordering(self):
+#     self.assertTrue(PokerMove.from_string(FOUR_OF_A_KIND).is_four_of_a_kind())
+
+#   def test_full_house_ordering(self):
+#     self.assertTrue(PokerMove.from_string(FULL_HOUSE).is_full_house())
 
 
-if __name__ == '__main__':
-  unittest.main()
+
+# if __name__ == '__main__':
+#   unittest.main()
