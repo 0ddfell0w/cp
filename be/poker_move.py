@@ -1,12 +1,47 @@
+from functools import total_ordering
 from collections import defaultdict
+
 from move import Move
 
+@total_ordering
 class PokerMove(Move):
+  STRAIGHT_FLUSH = 5
+  FOUR_OF_A_KIND = 4
+  FULL_HOUSE = 3
+  FLUSH = 2
+  STRAIGHT = 1
+  INVALID = 0
 
   def __init__(self, cards):
-    if len(cards) != 5:
-      raise ValueError("Poker hands must consist of five cards.")
     return super(PokerMove, self).__init__(cards)
+
+  def __eq__(self, other):
+    # not checking if it's valid for now
+    return sorted(self.cards) == sorted(other.cards)
+
+  def __lt__(self, other):
+    strength = self.getMoveStrength()
+    other_strength = other.getMoveStrength()
+    if stength < other_strength:
+      return True
+    elif stength > other_strength:
+      return False
+    return sorted(self.cards, reverse=True) < sorted(other.cards, reverse=True)
+
+  def getMoveStrength(self):
+    if not self.is_valid():
+     return PokerMove.INVALID
+    if self.is_straight_flush():
+     return PokerMove.STRAIGHT_FLUSH
+    elif self.is_four_of_a_kind():
+     return PokerMove.FOUR_OF_A_KIND
+    elif self.is_full_house():
+     return PokerMove.FULL_HOUSE
+    elif self.is_flush():
+     return PokerMove.FLUSH
+    elif self.is_straight():
+     return PokerMove.STRAIGHT
+
 
   def is_valid(self):
     if len(self.cards) < 5:
@@ -14,8 +49,9 @@ class PokerMove(Move):
     return any(check() for check in [
       self.is_straight,
       self.is_flush,
-      self.is_four_of_a_kind,
       self.is_full_house,
+      self.is_four_of_a_kind,
+      # self.is_straight_flush,
     ])
 
   def is_straight(self):
@@ -42,4 +78,3 @@ class PokerMove(Move):
       rankToSuits[card.rank].add(card.suit)
     lens = sorted(len(unique_suits) for unique_suits in rankToSuits.values())
     return lens == [2, 3]
-
