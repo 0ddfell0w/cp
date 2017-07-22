@@ -22,9 +22,9 @@ class PokerMove(Move):
   def __lt__(self, other):
     strength = self.getMoveStrength()
     other_strength = other.getMoveStrength()
-    if stength < other_strength:
+    if strength < other_strength:
       return True
-    elif stength > other_strength:
+    elif strength > other_strength:
       return False
     return sorted(self.cards, reverse=True) < sorted(other.cards, reverse=True)
 
