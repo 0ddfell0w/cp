@@ -1,22 +1,19 @@
 import unittest
 
 from ..kind_move import KindMove
-from .utils import CardCollectionUtils as cc_utils
+from .utils import CustomAssertions
 
 
-def test_one_of_a_kind():
-  cc_utils.assert_in_order_from_string(KindMove, ["3C", "4C"])
+class KindMoveTest(unittest.TestCase, CustomAssertions):
 
+  def test_one_of_a_kind(self):
+    self.assert_in_order_from_string(KindMove, ["3C", "4C"])
 
-def test_two_of_a_kind():
-  cc_utils.assert_in_order_from_string(KindMove, ["3C 3H", "4C 4H"])
+  def test_two_of_a_kind(self):
+    self.assert_in_order_from_string(KindMove, ["3C 3H", "4C 4H"])
 
-
-def test_three_of_a_kind():
-  cc_utils.assert_in_order_from_string(KindMove, ["3C 3H 3S", "4C 4H 4S"])
-
-
-class KindMoveTest(unittest.TestCase):
+  def test_three_of_a_kind(self):
+    self.assert_in_order_from_string(KindMove, ["3C 3H 3S", "4C 4H 4S"])
 
   def assertInvalidKindMove(self, move_string):
     self.assertFalse(KindMove.from_string(move_string).is_valid())
