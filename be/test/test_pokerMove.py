@@ -1,7 +1,7 @@
 import unittest
 
 from ..poker_move import PokerMove
-from test.utils import CardCollectionUtils as CCUtils
+from .utils import CardCollectionUtils as CCUtils
 
 INVALID = "3S 4S 5S 6S 2H"
 STRAIGHT = "3S 4C 5D 6S 7H"
@@ -9,6 +9,7 @@ FLUSH = "3S JS QS KS 7S"
 FULL_HOUSE = "3S 3H 3C 7D 7C"
 FOUR_OF_A_KIND = "3S 3H 3C 3D 7S"
 STRAIGHT_FLUSH = "7H 6H 5H 4H 3H"
+
 
 class PokerMoveTest(unittest.TestCase):
 
@@ -27,9 +28,7 @@ class PokerMoveTest(unittest.TestCase):
   def test_is_full_house(self):
     self.assertTrue(PokerMove.from_string(FULL_HOUSE).is_full_house())
 
-###############################################################################
-# Ordering
-
+  # Ordering
   def testMoveStrengthOrdering(self):
     CCUtils.assert_in_order_from_string(PokerMove, [
       INVALID,
@@ -67,7 +66,6 @@ class PokerMoveTest(unittest.TestCase):
 
 #   def test_full_house_ordering(self):
 #     self.assertTrue(PokerMove.from_string(FULL_HOUSE).is_full_house())
-
 
 
 # if __name__ == '__main__':

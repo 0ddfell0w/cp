@@ -74,17 +74,18 @@ class Card(object):
 
   @staticmethod
   def from_string(string):
-    rankString, suitString = string[:-1], string[-1:]
-    return Card(Rank.from_string(rankString), Suit.from_string(suitString))
+    rank_string, suit_string = string[:-1], string[-1:]
+    return Card(Rank.from_string(rank_string), Suit.from_string(suit_string))
 
-  def _is_valid_operand(self, other):
+  @staticmethod
+  def _is_valid_operand(other):
     return (hasattr(other, "suit") and
             hasattr(other, "rank"))
 
   def __eq__(self, other):
     if not self._is_valid_operand(other):
       return NotImplemented
-    return ((self.rank, self.suit) == (other.rank, other.suit))
+    return (self.rank, self.suit) == (other.rank, other.suit)
 
   def __lt__(self, other):
     if not self._is_valid_operand(other):
@@ -93,16 +94,16 @@ class Card(object):
             (other.rank, other.suit))
 
   def __repr__(self):
-    return "{}{}".format(self.rankString(), self.suitString())
+    return "{}{}".format(self.rank_string(), self.suit_string())
 
-  def rankString(self):
+  def rank_string(self):
     if self.rank > 10:
-      rankString = "JQKA2"[self.rank - 11]
+      rank_string = "JQKA2"[self.rank - 11]
     else:
-      rankString = str(self.rank)
-    return rankString
+      rank_string = str(self.rank)
+    return rank_string
 
-  def suitString(self):
+  def suit_string(self):
     # TODO(Zack): Replace with unicode characters
     if self.suit == Suit.DIAMONDS:
       return "D"

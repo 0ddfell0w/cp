@@ -35,7 +35,7 @@ class CardCollection(object):
     return cls([Card.from_string(sub) for sub in string.split(delimiter)])
 
   def shuffle(self):
-    '''Shuffle cards in place'''
+    """Shuffle cards in place"""
     self.cards = random.sample(self.cards, len(self.cards))
 
   def shuffled(self):
@@ -43,7 +43,7 @@ class CardCollection(object):
     return self
 
   def sort(self):
-    '''Sort cards in place'''
+    """Sort cards in place"""
     self.cards.sort()
 
   def sorted(self):
