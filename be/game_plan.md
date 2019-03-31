@@ -1,20 +1,11 @@
-# Setting up the Game
+# Game Plan
+## Setting up the Game
+Multiple players, ordered to mimic the position of the players. First move goes to owner of lowest card.
 
-Collection of player hands (type: list<playerHand)
-	in order they'll play
-	first player determined by who has least card
+The game will consist of a series of rounds, each round ends when someone passes. Each round has a move-type, either poker move or kind-move.
 
-	activeRound (type: Round)
-	and list of previous rounds
+## Setting up the Round
+Each round begins with a player playing a move.
 
-	State of game (over? with winner?)
-		- keep in mind multiple winners/win order
-
-	Do you need to know the full deck, or could you
-	just use the union of the cards in the hands
-		Why you need the full deck:
-			For test scenarios, playing scenarios, etc,
-			if there was never a 3 of Diamonds, a diamond flush is less likely
-
-# Setting up the Round
-
+## Playing Strategy
+At first, we'll start by making a random valid move.
