@@ -1,4 +1,5 @@
 from card import Card
+from random import random
 
 class CardCollection(object):
   def __init__(self, cards):

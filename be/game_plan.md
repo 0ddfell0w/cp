@@ -5,8 +5,7 @@ Collection of player hands (type: list<playerHand)
 	first player determined by who has least card
 
 	activeRound (type: Round)
-
-	list of previous rounds?
+	and list of previous rounds
 
 	State of game (over? with winner?)
 		- keep in mind multiple winners/win order

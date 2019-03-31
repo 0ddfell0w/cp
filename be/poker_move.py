@@ -20,15 +20,15 @@ class PokerMove(Move):
     return sorted(self.cards) == sorted(other.cards)
 
   def __lt__(self, other):
-    strength = self.getMoveStrength()
-    other_strength = other.getMoveStrength()
+    strength = self.get_move_strength()
+    other_strength = other.get_move_strength()
     if strength < other_strength:
       return True
     elif strength > other_strength:
       return False
     return sorted(self.cards, reverse=True) < sorted(other.cards, reverse=True)
 
-  def getMoveStrength(self):
+  def get_move_strength(self):
     if not self.is_valid():
      return PokerMove.INVALID
     if self.is_straight_flush():
@@ -41,7 +41,6 @@ class PokerMove(Move):
      return PokerMove.FLUSH
     elif self.is_straight():
      return PokerMove.STRAIGHT
-
 
   def is_valid(self):
     if len(self.cards) < 5:

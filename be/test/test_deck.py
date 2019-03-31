@@ -6,7 +6,6 @@ from card import Card, Rank, Suit
 from deck import Deck
 from hand import Hand
 
-
 class DeckTest(unittest.TestCase):
 
   def test_self_equality(self):
