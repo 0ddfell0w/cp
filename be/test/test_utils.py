@@ -6,7 +6,7 @@ from .utils import CustomAssertions
 
 class TestCustomAssertions(unittest.TestCase, CustomAssertions):
   @total_ordering
-  class MockClass(object):
+  class MockClass:
 
     def __init__(self, value): self.value = value
 

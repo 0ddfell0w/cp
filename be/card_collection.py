@@ -2,7 +2,7 @@ from .card import Card
 from random import random
 
 
-class CardCollection(object):
+class CardCollection:
   def __init__(self, cards):
     self.cards = cards
 

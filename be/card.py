@@ -7,7 +7,7 @@ from __future__ import absolute_import, unicode_literals
 from functools import total_ordering
 
 
-class Suit(object):
+class Suit:
   _D = DIAMONDS = 1
   _C = CLUBS = 2
   _H = HEARTS = 3
@@ -33,7 +33,7 @@ class Suit(object):
     }.get(str(string).upper())
 
 
-class Rank(object):
+class Rank:
   _3 = THREE = 3
   _4 = FOUR = 4
   _5 = FIVE = 5
@@ -70,7 +70,7 @@ class Rank(object):
 
 
 @total_ordering
-class Card(object):
+class Card:
 
   def __init__(self, rank, suit):
     self.rank = rank
