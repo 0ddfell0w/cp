@@ -22,6 +22,10 @@ class Suit(object):
       "C": Suit.CLUBS,
       "H": Suit.HEARTS,
       "S": Suit.SPADES,
+      "♦": Suit.DIAMONDS,
+      "♣": Suit.CLUBS,
+      "♥": Suit.HEARTS,
+      "♠": Suit.SPADES,
       "DIAMONDS": Suit.DIAMONDS,
       "CLUBS": Suit.CLUBS,
       "HEARTS": Suit.HEARTS,
@@ -104,12 +108,14 @@ class Card(object):
     return rank_string
 
   def suit_string(self):
-    # TODO(Zack): Replace with unicode characters
     if self.suit == Suit.DIAMONDS:
-      return "D"
+      return "♦"
     elif self.suit == Suit.CLUBS:
-      return "C"
+      return "♣"
     elif self.suit == Suit.HEARTS:
-      return "H"
+      return "♥"
     elif self.suit == Suit.SPADES:
-      return "S"
+      return "♠"
+
+
+Card.fs = Card.from_string
