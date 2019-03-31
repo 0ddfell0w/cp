@@ -51,7 +51,6 @@ class PokerMove(Move):
       self.is_flush,
       self.is_full_house,
       self.is_four_of_a_kind,
-      # self.is_straight_flush,
     ])
 
   def is_straight(self):

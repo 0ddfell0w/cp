@@ -29,7 +29,7 @@ class PokerMoveTest(unittest.TestCase, CustomAssertions):
     self.assertTrue(PokerMove.from_string(FULL_HOUSE).is_full_house())
 
   # Ordering
-  def testMoveStrengthOrdering(self):
+  def test_move_strength_ordering(self):
     self.assert_in_order_from_string(PokerMove, [
       INVALID,
       STRAIGHT,
