@@ -4,15 +4,15 @@ from ..kind_move import KindMove
 from .utils import CardCollectionUtils as cc_utils
 
 
-def testOneOfAKind():
+def test_one_of_a_kind():
   cc_utils.assert_in_order_from_string(KindMove, ["3C", "4C"])
 
 
-def testTwoOfAKind():
+def test_two_of_a_kind():
   cc_utils.assert_in_order_from_string(KindMove, ["3C 3H", "4C 4H"])
 
 
-def testThreeOfAKind():
+def test_three_of_a_kind():
   cc_utils.assert_in_order_from_string(KindMove, ["3C 3H 3S", "4C 4H 4S"])
 
 
