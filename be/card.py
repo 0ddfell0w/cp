@@ -1,17 +1,13 @@
 # coding: utf-8
-'''
+"""
 Dump of relevant classes for representing card collections (e.g. moves, hands, decks).
-'''
+"""
 from __future__ import absolute_import, unicode_literals
 
-import bisect
-import random
-from collections import Counter, defaultdict
 from functools import total_ordering
 
 
 class Suit(object):
-
   _D = DIAMONDS = 1
   _C = CLUBS = 2
   _H = HEARTS = 3
@@ -34,7 +30,6 @@ class Suit(object):
 
 
 class Rank(object):
-
   _3 = THREE = 3
   _4 = FOUR = 4
   _5 = FIVE = 5
@@ -69,6 +64,7 @@ class Rank(object):
       "2": Rank.TWO,
     }.get(str(string).upper())
 
+
 @total_ordering
 class Card(object):
 
@@ -82,19 +78,19 @@ class Card(object):
     return Card(Rank.from_string(rankString), Suit.from_string(suitString))
 
   def _is_valid_operand(self, other):
-      return (hasattr(other, "suit") and
-              hasattr(other, "rank"))
+    return (hasattr(other, "suit") and
+            hasattr(other, "rank"))
 
   def __eq__(self, other):
-      if not self._is_valid_operand(other):
-          return NotImplemented
-      return ((self.rank, self.suit) == (other.rank, other.suit))
+    if not self._is_valid_operand(other):
+      return NotImplemented
+    return ((self.rank, self.suit) == (other.rank, other.suit))
 
   def __lt__(self, other):
-      if not self._is_valid_operand(other):
-          return NotImplemented
-      return ((self.rank, self.suit) <
-              (other.rank, other.suit))
+    if not self._is_valid_operand(other):
+      return NotImplemented
+    return ((self.rank, self.suit) <
+            (other.rank, other.suit))
 
   def __repr__(self):
     return "{}{}".format(self.rankString(), self.suitString())

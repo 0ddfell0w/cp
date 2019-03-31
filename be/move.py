@@ -1,4 +1,5 @@
-from card_collection import CardCollection
+from .card_collection import CardCollection
+
 
 class Move(CardCollection):
   def __init__(self, cards):

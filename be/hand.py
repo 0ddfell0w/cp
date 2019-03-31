@@ -1,4 +1,4 @@
-from card_collection import CardCollection
+from .card_collection import CardCollection
 
 
 class Hand(CardCollection):

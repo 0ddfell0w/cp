@@ -1,11 +1,10 @@
 import unittest
 from functools import total_ordering
 
-from utils import CardCollectionUtils as cc_utils
+from .utils import CardCollectionUtils as CCUtils
 
 
 class TestCardCollectionUtils(unittest.TestCase):
-
   @total_ordering
   class MockClass(object):
 
@@ -21,12 +20,12 @@ class TestCardCollectionUtils(unittest.TestCase):
 
   def testassert_in_order_from_string(self):
     mocks = [self.MockClass(value) for value in [5, 6, 7]]
-    cc_utils.assert_in_order_from_string(self.MockClass, mocks)
+    CCUtils.assert_in_order_from_string(self.MockClass, mocks)
 
   def testassert_in_order_from_string_NotInOrder(self):
     mocks = [self.MockClass(value) for value in [8, 6, 7]]
     with self.assertRaises(AssertionError):
-      cc_utils.assert_in_order_from_string(self.MockClass, mocks)
+      CCUtils.assert_in_order_from_string(self.MockClass, mocks)
 
 
 if __name__ == '__main__':

@@ -1,7 +1,8 @@
 from functools import total_ordering
 from collections import defaultdict
 
-from move import Move
+from .move import Move
+
 
 @total_ordering
 class PokerMove(Move):
@@ -13,7 +14,7 @@ class PokerMove(Move):
   INVALID = 0
 
   def __init__(self, cards):
-    return super(PokerMove, self).__init__(cards)
+    super(PokerMove, self).__init__(cards)
 
   def __eq__(self, other):
     # not checking if it's valid for now
@@ -30,17 +31,17 @@ class PokerMove(Move):
 
   def get_move_strength(self):
     if not self.is_valid():
-     return PokerMove.INVALID
+      return PokerMove.INVALID
     if self.is_straight_flush():
-     return PokerMove.STRAIGHT_FLUSH
+      return PokerMove.STRAIGHT_FLUSH
     elif self.is_four_of_a_kind():
-     return PokerMove.FOUR_OF_A_KIND
+      return PokerMove.FOUR_OF_A_KIND
     elif self.is_full_house():
-     return PokerMove.FULL_HOUSE
+      return PokerMove.FULL_HOUSE
     elif self.is_flush():
-     return PokerMove.FLUSH
+      return PokerMove.FLUSH
     elif self.is_straight():
-     return PokerMove.STRAIGHT
+      return PokerMove.STRAIGHT
 
   def is_valid(self):
     if len(self.cards) < 5:
@@ -65,15 +66,15 @@ class PokerMove(Move):
     return self.is_straight() and self.is_flush()
 
   def is_four_of_a_kind(self):
-    rankToSuits = defaultdict(set)
+    rank_to_suits = defaultdict(set)
     for card in self.cards:
-      rankToSuits[card.rank].add(card.suit)
-    lens = sorted(len(unique_suits) for unique_suits in rankToSuits.values())
+      rank_to_suits[card.rank].add(card.suit)
+    lens = sorted(len(unique_suits) for unique_suits in rank_to_suits.values())
     return lens == [1, 4]
 
   def is_full_house(self):
-    rankToSuits = defaultdict(set)
+    rank_to_suits = defaultdict(set)
     for card in self.cards:
-      rankToSuits[card.rank].add(card.suit)
-    lens = sorted(len(unique_suits) for unique_suits in rankToSuits.values())
+      rank_to_suits[card.rank].add(card.suit)
+    lens = sorted(len(unique_suits) for unique_suits in rank_to_suits.values())
     return lens == [2, 3]

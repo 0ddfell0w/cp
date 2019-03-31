@@ -1,7 +1,7 @@
 import unittest
 
-from poker_move import PokerMove
-from test.utils import CardCollectionUtils as cc_utils
+from ..poker_move import PokerMove
+from test.utils import CardCollectionUtils as CCUtils
 
 INVALID = "3S 4S 5S 6S 2H"
 STRAIGHT = "3S 4C 5D 6S 7H"
@@ -31,7 +31,7 @@ class PokerMoveTest(unittest.TestCase):
 # Ordering
 
   def testMoveStrengthOrdering(self):
-    cc_utils.assert_in_order_from_string(PokerMove, [
+    CCUtils.assert_in_order_from_string(PokerMove, [
       INVALID,
       STRAIGHT,
       FLUSH,
@@ -42,20 +42,20 @@ class PokerMoveTest(unittest.TestCase):
 
   # Intra-move-strength ordering
   def test_straight_ordering_highest_card_wins(self):
-    cc_utils.assert_in_order_from_string(PokerMove,
-      ["3S 4C 5D 6S 7H", "3S 4C 5D 6S 7S"])
+    CCUtils.assert_in_order_from_string(PokerMove,
+                                        ["3S 4C 5D 6S 7H", "3S 4C 5D 6S 7S"])
 
   def test_straight_ordering_second_highest_card_wins(self):
-    cc_utils.assert_in_order_from_string(PokerMove,
-      ["3S 4C 5D 6C 7H", "3S 4C 5D 6S 7H"])
+    CCUtils.assert_in_order_from_string(PokerMove,
+                                        ["3S 4C 5D 6C 7H", "3S 4C 5D 6S 7H"])
 
   def test_straight_ordering_with_two(self):
-    cc_utils.assert_in_order_from_string(PokerMove,
-      ["9S 10D JC QD KS", "10S JC QD KS 2H"])
+    CCUtils.assert_in_order_from_string(PokerMove,
+                                        ["9S 10D JC QD KS", "10S JC QD KS 2H"])
 
   def test_straight_ordering_with_two_suit_wins(self):
-    cc_utils.assert_in_order_from_string(PokerMove,
-      ["10S JC QD KS 2D", "10S JC QD KS 2H"])
+    CCUtils.assert_in_order_from_string(PokerMove,
+                                        ["10S JC QD KS 2D", "10S JC QD KS 2H"])
 #   def test_flush_ordering(self):
 #     self.assertTrue(PokerMove.from_string(FLUSH).is_flush())
 

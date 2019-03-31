@@ -1,5 +1,6 @@
-from card import Card
+from .card import Card
 from random import random
+
 
 class CardCollection(object):
   def __init__(self, cards):
@@ -17,7 +18,7 @@ class CardCollection(object):
     if not isinstance(other, CardCollection):
       raise NotImplemented()  # TODO(Zack): helpful message? type error?
     return (len(self) == len(other) and
-      sorted(self.cards) == sorted(other.cards))
+            sorted(self.cards) == sorted(other.cards))
 
   def __repr__(self):
     return "<{} ({}) {}>".format(
@@ -56,5 +57,5 @@ class CardCollection(object):
     if not n:
       return
     card_to_score = {card: idx
-      for idx, card in enumerate(sorted(self.cards))}
+                     for idx, card in enumerate(sorted(self.cards))}
     self.cards = [card for card in self.cards if card_to_score[card] >= n]
