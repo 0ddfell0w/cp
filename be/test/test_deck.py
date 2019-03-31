@@ -17,16 +17,16 @@ class DeckTest(unittest.TestCase):
 class DefaultDeckTest(unittest.TestCase):
 
   def test_size(self):
-    self.assertEqual(52, len(Deck.DefaultDeck()),
-                     "52 != {}".format(len(Deck.DefaultDeck())))
+    self.assertEqual(52, len(Deck.get_default_deck()),
+                     "52 != {}".format(len(Deck.get_default_deck())))
 
   def test_composition(self):
     expected_deck = Deck.from_string(
       ('3D 3C 3H 3S 4D 4C 4H 4S 5D 5C 5H 5S 6D 6C 6H 6S 7D 7C 7H 7S'
        ' 8D 8C 8H 8S 9D 9C 9H 9S 10D 10C 10H 10S JD JC JH JS'
        ' QD QC QH QS KD KC KH KS AD AC AH AS 2D 2C 2H 2S'))
-    self.assertEqual(expected_deck, Deck.DefaultDeck(),
-                     "{} != {}".format("Default deck", Deck.DefaultDeck()))
+    self.assertEqual(expected_deck, Deck.get_default_deck(),
+                     "{} != {}".format("Default deck", Deck.get_default_deck()))
 
   def test_order_suits(self):
     for r in Rank.VALID_RANKS:

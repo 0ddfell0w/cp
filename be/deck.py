@@ -8,7 +8,7 @@ from .hand import Hand
 class Deck(CardCollection):
 
   @staticmethod
-  def DefaultDeck():
+  def get_default_deck():
     """Get a 52 card deck in sorted order"""
     return Deck([Card(rank, suit)
                  for rank in Rank.VALID_RANKS
