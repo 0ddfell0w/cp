@@ -7,6 +7,9 @@ class PlayerMove:
     self.player = player
     self.move = move
 
+  def __repr__(self):
+    return "<PM {}: {}>".format(self.player.name, self.move.cards)
+
   @staticmethod
   def from_string(player, string):
     cards = CardCollection.from_string(string)
