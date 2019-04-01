@@ -1,2 +1,2 @@
 # cp
-Chinese Poker
+Chinese Poker (Big Two)
