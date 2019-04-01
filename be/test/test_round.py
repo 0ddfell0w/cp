@@ -9,6 +9,7 @@ from .utils import CustomAssertions
 
 class RoundTest(unittest.TestCase, CustomAssertions):
 
+  # APPEND
   # Valid first move
   def test_append_first_move_kind_move(self):
     player1 = Player("1", CardCollection.from_string("2S 2H 2C 2D 10S 10H 10C 10D"))
@@ -66,7 +67,6 @@ class RoundTest(unittest.TestCase, CustomAssertions):
     self.assertIn("does not have", str(e.exception))
     self.assertIn("QH", str(e.exception))
 
-  # next, try to append a move of the wrong type.
   def test_append_move_kind_move_after_poker_move(self):
     player1 = Player("1", CardCollection.from_string("2S 2H 2C 2D 10S 10H 10C 10D 9H"))
     player2 = Player("2", CardCollection.from_string("9S 9H 9C 9D JS JH JC JD"))
@@ -90,3 +90,38 @@ class RoundTest(unittest.TestCase, CustomAssertions):
     with self.assertRaises(ValueError) as e:
       rnd.append(PlayerMove.from_string(player2, "10H 10C 10D 2H 2D"))
     self.assertIn("Expected KindMove", str(e.exception))
+
+  # NEXT PLAYER
+  def test_next_player(self):
+    player1 = Player("1", CardCollection.from_string("9S 9H 9C 9D JS JH JC JD"))
+    player2 = Player("2", CardCollection.from_string("2S 2H 2C 2D 10S 10H 10C 10D"))
+    rnd = Round(
+      [player1, player2],
+      [
+        PlayerMove.from_string(player1, "JH JC JD")
+      ])
+    self.assertEqual(rnd.next_player(), player2)
+
+  def test_next_player_three_players(self):
+    player1 = Player("1", CardCollection.from_string("9S 9H 9C 9D JS JH JC JD"))
+    player2 = Player("2", CardCollection.from_string("2S 2H 2C 2D 10S 10H 10C 10D"))
+    player3 = Player("3", CardCollection.from_string("KH"))
+    rnd = Round(
+      [player1, player2, player3],
+      [
+        PlayerMove.from_string(player1, "JH JC JD"),
+        PlayerMove.from_string(player2, "2H 2C 2D"),
+      ])
+    self.assertEqual(rnd.next_player(), player3)
+
+  def test_next_player_skips_players_without_cards(self):
+    player1 = Player("1", CardCollection.from_string("9S 9H 9C 9D JS JH JC JD"))
+    player2 = Player("2", CardCollection.from_string("2S 2H 2C 2D 10S 10H 10C 10D"))
+    player3 = Player("3", CardCollection.from_string(""))
+    rnd = Round(
+      [player1, player2, player3],
+      [
+        PlayerMove.from_string(player1, "JH JC JD"),
+        PlayerMove.from_string(player2, "2H 2C 2D"),
+      ])
+    self.assertEqual(rnd.next_player(), player1)

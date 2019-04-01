@@ -17,8 +17,8 @@ class Round:
     """
     if not self.player_moves:
       return self.players[0] if self.players else None
-    last_player_idx = self.players.index(self.player_moves[-1].player)
-    pivoted = self.players[last_player_idx:] + self.players[:last_player_idx]
+    next_player_idx = (self.players.index(self.player_moves[-1].player) + 1) % len(self.players)
+    pivoted = self.players[next_player_idx:] + self.players[:next_player_idx]
     try:
       return next(player for player in pivoted if player.cards)
     except StopIteration:
