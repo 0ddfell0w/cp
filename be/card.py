@@ -91,6 +91,9 @@ class Card:
       return NotImplemented
     return (self.rank, self.suit) == (other.rank, other.suit)
 
+  def __hash__(self):
+    return hash((self.rank, self.suit))
+
   def __lt__(self, other):
     if not self._is_valid_operand(other):
       return NotImplemented
@@ -109,13 +112,13 @@ class Card:
 
   def suit_string(self):
     if self.suit == Suit.DIAMONDS:
-      return "♦"
+      return "D"  # return "♦"
     elif self.suit == Suit.CLUBS:
-      return "♣"
+      return "C"  # return "♣"
     elif self.suit == Suit.HEARTS:
-      return "♥"
+      return "H"  # return "♥"
     elif self.suit == Suit.SPADES:
-      return "♠"
+      return "S"  # return "♠"
 
 
 Card.fs = Card.from_string
