@@ -13,16 +13,17 @@ class Round:
 
   def next_player(self):
     """
-    :return: next player to move
+    :return: next player to move, or None if the round is over.
     """
     if not self.player_moves:
       return self.players[0] if self.players else None
     next_player_idx = (self.players.index(self.player_moves[-1].player) + 1) % len(self.players)
     pivoted = self.players[next_player_idx:] + self.players[:next_player_idx]
     try:
-      return next(player for player in pivoted if player.cards)
+      player = next(player for player in pivoted if player.cards)
     except StopIteration:
       return None
+    return player if player != self.player_moves[-1].player else None
 
   def append(self, player_move):
     if not self.player_moves:
