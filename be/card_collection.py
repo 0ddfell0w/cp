@@ -1,5 +1,5 @@
 from .card import Card
-from random import random
+from random import sample
 
 
 class CardCollection:
@@ -36,7 +36,7 @@ class CardCollection:
 
   def shuffle(self):
     """Shuffle cards in place"""
-    self.cards = random.sample(self.cards, len(self.cards))
+    self.cards = sample(self.cards, len(self.cards))
 
   def shuffled(self):
     self.shuffle()
@@ -53,9 +53,9 @@ class CardCollection:
   def by_rank(self):
     return sorted(self.cards)
 
-  def remove_lowest_cards(self, n):
+  def without_lowest_cards(self, n):
     if not n:
       return
     card_to_score = {card: idx
                      for idx, card in enumerate(sorted(self.cards))}
-    self.cards = [card for card in self.cards if card_to_score[card] >= n]
+    return [card for card in self.cards if card_to_score[card] >= n]

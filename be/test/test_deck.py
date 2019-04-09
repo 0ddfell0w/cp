@@ -47,6 +47,19 @@ class DefaultDeckTest(unittest.TestCase):
     self.assertEqual(Hand.from_string("5C 9S 2D 2H").cards,
                      Hand.from_string("2H 9S 5C 2D").sorted().cards)
 
+  def test_get_hands_3_players_3D_excluded(self):
+    d = Deck.get_default_deck().get_hands(3)
+    hands = d.get_hands(3)
+    diff = list(set(d.cards) - set(card for hand in hands for card in hand))
+    self.assertEqual(diff[0], Card.from_string("3D"))
+
+  def test_get_hands_shuffled_3_players_3D_excluded(self):
+    d = Deck.get_default_deck()
+    d.shuffle()
+    hands = d.get_hands(3)
+    diff = list(set(d.cards) - set(card for hand in hands for card in hand))
+    self.assertEqual(diff[0], Card.from_string("3D"))
+
 
 if __name__ == '__main__':
   unittest.main()

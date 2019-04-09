@@ -16,10 +16,9 @@ class Deck(CardCollection):
 
   def get_hands(self, num_hands, remove_cards=True):
     """get num_hands-many hands from the deck"""
-    if remove_cards:
-      self.remove_lowest_cards(len(self.cards) % num_hands)
+    cards = self.without_lowest_cards(len(self.cards) % num_hands) if remove_cards else self.cards
     hands = [Hand([]) for _ in range(num_hands)]
-    for idx, card in enumerate(self.cards):
+    for idx, card in enumerate(cards):
       hand = hands[idx % num_hands]
       bisect.insort_left(hand.cards, card)
     return hands
